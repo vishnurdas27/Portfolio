@@ -1,0 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif; /* Ensure you import Inter in your index.html */
+  -webkit-font-smoothing: antialiased;
+}
