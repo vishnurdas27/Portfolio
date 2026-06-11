@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare } from 'lucide-react'; // ✅ Standard icon from Lucide
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'; // ✅ Brand icons from react-icons
+import heroPhoto from '../assets/IMG_4481.PNG';
 import './Hero.css';
 
 const Hero = () => {
@@ -112,10 +113,7 @@ const Hero = () => {
             className="image-frame"
           >
             <div className="image-inner">
-              {/* PLACE YOUR PHOTO HERE */}
-              {/* <img src="/your-photo.jpg" alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> */}
-              
-              <span>[Creative Photo Space]</span>
+              <img src={heroPhoto} alt="Vishnu R Das" className="hero-photo" />
               <div className="image-overlay"></div>
             </div>
           </motion.div>
