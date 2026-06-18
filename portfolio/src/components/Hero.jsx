@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare } from 'lucide-react'; // ✅ Standard icon from Lucide
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'; // ✅ Brand icons from react-icons
+import { MessageSquare } from 'lucide-react';
+import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import heroPhoto from '../assets/IMG_4481.PNG';
 import './Hero.css';
 
@@ -19,26 +19,30 @@ const Hero = () => {
     visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
   };
 
+  // Pulled these out of the JSX to keep the markup clean
+  const navItems = ['About Me', 'Skills', 'Projects', 'Contact Me'];
+  const socialIcons = [FaGithub, FaLinkedin, FaTwitter, MessageSquare];
+
   return (
     <div className="hero-container">
       
-      {/* Navbar */}
       <nav className="navbar">
         <motion.div 
-          initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} 
+          initial={{ opacity: 0, x: -20 }} 
+          animate={{ opacity: 1, x: 0 }} 
           className="logo"
         >
-          <div className="logo-icon"></div>
-          Personal
+          <div className="logo-icon" />
+          PORTFOLIO
         </motion.div>
         
         <ul className="nav-links">
-          {['About Me', 'Skills', 'Project', 'Contact Me'].map((item, index) => (
+          {navItems.map((item, i) => (
             <motion.li 
               key={item} 
               initial={{ opacity: 0, y: -10 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: i * 0.1 }}
             >
               {item}
             </motion.li>
@@ -54,10 +58,8 @@ const Hero = () => {
         </motion.button>
       </nav>
 
-      {/* Main Hero Section */}
       <main className="main-content">
         
-        {/* Left Column: Text & Socials */}
         <motion.div 
           className="left-column"
           variants={containerVariants}
@@ -65,11 +67,9 @@ const Hero = () => {
           animate="visible"
         >
           <motion.h1 variants={itemVariants} className="headline">
-            Hello I'm <span className="text-navy">Vishnu R Das.</span>
+            Hello, I'm <span className="text-navy">Vishnu R Das.</span>
             <br />
             <span className="gradient-text">Fullstack</span> Developer
-            <br />
-            Based In <span className="underline-mint">India.</span>
           </motion.h1>
 
           <motion.p variants={itemVariants} className="description">
@@ -77,8 +77,7 @@ const Hero = () => {
           </motion.p>
 
           <motion.div variants={itemVariants} className="social-links">
-            {/* ✅ Updated array to use the newly imported React Icons alongside Lucide */}
-            {[FaGithub, FaLinkedin, FaTwitter, MessageSquare].map((Icon, idx) => (
+            {socialIcons.map((Icon, idx) => (
               <motion.a 
                 key={idx}
                 href="#"
@@ -92,9 +91,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        {/* Right Column: Creative Image Space */}
         <div className="right-column">
-          {/* Animated Background Geometric Elements */}
           <motion.div 
             animate={{ rotate: 360 }}
             transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
@@ -106,7 +103,6 @@ const Hero = () => {
             className="geo-circle geo-circle-2"
           />
 
-          {/* Image Container */}
           <motion.div 
             animate={{ y: [0, -15, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -114,13 +110,12 @@ const Hero = () => {
           >
             <div className="image-inner">
               <img src={heroPhoto} alt="Vishnu R Das" className="hero-photo" />
-              <div className="image-overlay"></div>
+              <div className="image-overlay" />
             </div>
           </motion.div>
         </div>
       </main>
 
-      {/* Decorative Bottom Line */}
       <motion.div 
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
