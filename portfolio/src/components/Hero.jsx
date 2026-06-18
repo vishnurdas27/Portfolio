@@ -1,129 +1,126 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare } from 'lucide-react';
+import { ArrowDown, MapPin } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { HiOutlineMail } from 'react-icons/hi';
 import heroPhoto from '../assets/IMG_4481.PNG';
 import './Hero.css';
 
-const Hero = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.3 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
-  };
-
-  // Pulled these out of the JSX to keep the markup clean
-  const navItems = ['About Me', 'Skills', 'Projects', 'Contact Me'];
-  const socialIcons = [FaGithub, FaLinkedin, FaTwitter, MessageSquare];
-
-  return (
-    <div className="hero-container">
-      
-      <nav className="navbar">
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }} 
-          animate={{ opacity: 1, x: 0 }} 
-          className="logo"
-        >
-          <div className="logo-icon" />
-          PORTFOLIO
-        </motion.div>
-        
-        <ul className="nav-links">
-          {navItems.map((item, i) => (
-            <motion.li 
-              key={item} 
-              initial={{ opacity: 0, y: -10 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ delay: i * 0.1 }}
-            >
-              {item}
-            </motion.li>
-          ))}
-        </ul>
-
-        <motion.button 
-          whileHover={{ scale: 1.05, backgroundColor: '#10B981' }}
-          whileTap={{ scale: 0.95 }}
-          className="resume-btn"
-        >
-          Resume <span style={{ fontSize: '1.25rem' }}>↓</span>
-        </motion.button>
-      </nav>
-
-      <main className="main-content">
-        
-        <motion.div 
-          className="left-column"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.h1 variants={itemVariants} className="headline">
-            Hello, I'm <span className="text-navy">Vishnu R Das.</span>
-            <br />
-            <span className="gradient-text">Fullstack</span> Developer
-          </motion.h1>
-
-          <motion.p variants={itemVariants} className="description">
-            I build robust, scalable web applications using React, Node.js, and MongoDB. Passionate about transforming complex business processes into clean, interactive digital experiences.
-          </motion.p>
-
-          <motion.div variants={itemVariants} className="social-links">
-            {socialIcons.map((Icon, idx) => (
-              <motion.a 
-                key={idx}
-                href="#"
-                whileHover={{ scale: 1.1, y: -5, boxShadow: "0px 10px 15px -3px rgba(16, 185, 129, 0.4)" }}
-                whileTap={{ scale: 0.9 }}
-                className="social-btn"
-              >
-                <Icon size={24} />
-              </motion.a>
-            ))}
-          </motion.div>
-        </motion.div>
-
-        <div className="right-column">
-          <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-            className="geo-circle geo-circle-1"
-          />
-          <motion.div 
-            animate={{ rotate: -360 }}
-            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-            className="geo-circle geo-circle-2"
-          />
-
-          <motion.div 
-            animate={{ y: [0, -15, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="image-frame"
-          >
-            <div className="image-inner">
-              <img src={heroPhoto} alt="Vishnu R Das" className="hero-photo" />
-              <div className="image-overlay" />
-            </div>
-          </motion.div>
-        </div>
-      </main>
-
-      <motion.div 
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 1.5, delay: 1 }}
-        className="bottom-line"
-      />
-    </div>
-  );
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 22 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
 };
 
-export default Hero;
+export default function Hero({ profile }) {
+  const socials = [
+    profile?.socials?.github && { Icon: FaGithub, href: profile.socials.github, label: 'GitHub' },
+    profile?.socials?.linkedin && {
+      Icon: FaLinkedin,
+      href: profile.socials.linkedin,
+      label: 'LinkedIn',
+    },
+    profile?.socials?.twitter && {
+      Icon: FaTwitter,
+      href: profile.socials.twitter,
+      label: 'Twitter',
+    },
+    profile?.email && { Icon: HiOutlineMail, href: `mailto:${profile.email}`, label: 'Email' },
+  ].filter(Boolean);
+
+  return (
+    <section id="top" className="hero">
+      <div className="container hero__inner">
+        <motion.div className="hero__text" variants={container} initial="hidden" animate="show">
+          <motion.div className="hero__badge" variants={item}>
+            <span className="hero__badge-dot" />
+            Available for work
+          </motion.div>
+
+          <motion.p className="hero__greeting" variants={item}>
+            Hi, I&apos;m
+          </motion.p>
+
+          <motion.h1 className="hero__name" variants={item}>
+            {profile?.name || 'Vishnu R Das'}
+            <span className="hero__period">.</span>
+          </motion.h1>
+
+          <motion.h2 className="hero__title" variants={item}>
+            {profile?.title || 'Full-Stack Developer'}
+          </motion.h2>
+
+          <motion.p className="hero__intro" variants={item}>
+            {profile?.heroIntro ||
+              'I build robust, scalable web applications with the MERN stack.'}
+          </motion.p>
+
+          <motion.div className="hero__cta" variants={item}>
+            <a href="#projects" className="btn btn-primary">
+              View my work
+            </a>
+            <a href="#contact" className="btn btn-ghost">
+              Get in touch
+            </a>
+          </motion.div>
+
+          {socials.length > 0 && (
+            <motion.div className="hero__socials" variants={item}>
+              {socials.map(({ Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith('mailto:') ? undefined : '_blank'}
+                  rel="noreferrer"
+                  className="hero__social"
+                  aria-label={label}
+                >
+                  <Icon size={19} />
+                </a>
+              ))}
+            </motion.div>
+          )}
+        </motion.div>
+
+        <motion.div
+          className="hero__visual"
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
+        >
+          <motion.span
+            className="hero__ring hero__ring--1"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+          />
+          <motion.span
+            className="hero__ring hero__ring--2"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 55, repeat: Infinity, ease: 'linear' }}
+          />
+          <motion.div
+            className="hero__photo-wrap"
+            animate={{ y: [0, -12, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <img src={heroPhoto} alt={profile?.name || 'Portrait'} className="hero__photo" />
+          </motion.div>
+
+          {profile?.location && (
+            <div className="hero__location">
+              <MapPin size={14} />
+              {profile.location}
+            </div>
+          )}
+        </motion.div>
+      </div>
+
+      <a href="#about" className="hero__scroll" aria-label="Scroll to about">
+        <span>Scroll</span>
+        <ArrowDown size={16} />
+      </a>
+    </section>
+  );
+}

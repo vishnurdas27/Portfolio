@@ -1,0 +1,420 @@
+/* ============================================================
+   Admin shared styles
+   ============================================================ */
+
+/* ---- Login ---- */
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.login__card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 32px;
+}
+.login__logo {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.login__logo span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-bottom: 6px;
+}
+.login__sub {
+  color: var(--text-faint);
+  font-size: 0.9rem;
+  margin-bottom: 26px;
+}
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.login__error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 0.88rem;
+}
+.login__hint {
+  margin-top: 18px;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+  text-align: center;
+}
+.login__back {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--text-faint);
+  font-size: 0.82rem;
+}
+.login__back:hover {
+  color: var(--accent-2);
+}
+
+/* ---- Dashboard shell ---- */
+.admin {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 244px 1fr;
+}
+.admin__sidebar {
+  border-right: 1px solid var(--border);
+  background: var(--bg-soft);
+  padding: 26px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.admin__brand {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.15rem;
+  padding: 0 10px 22px;
+}
+.admin__brand span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-bottom: 5px;
+}
+.admin__nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 0.94rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  text-align: left;
+  width: 100%;
+  transition: background 0.2s, color 0.2s;
+}
+.admin__nav-item:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+.admin__nav-item--active {
+  background: var(--accent-soft);
+  color: var(--accent-2);
+}
+.admin__nav-badge {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  background: var(--accent);
+  color: #04150f;
+  border-radius: 999px;
+  padding: 1px 7px;
+}
+.admin__sidebar-foot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin__main {
+  padding: 32px 36px 64px;
+  max-width: 980px;
+}
+.admin__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.admin__title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.admin__subtitle {
+  color: var(--text-faint);
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+/* ---- Cards / rows ---- */
+.admin__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.admin-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+.admin-row__main {
+  flex: 1;
+  min-width: 0;
+}
+.admin-row__title {
+  font-weight: 600;
+  font-size: 1.02rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.admin-row__sub {
+  color: var(--text-faint);
+  font-size: 0.86rem;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 460px;
+}
+.admin-row__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.icon-btn:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.icon-btn--danger:hover {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.4);
+}
+
+.tag-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---- Forms (shared with .field from Contact.css) ---- */
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.admin-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.admin-form__check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+.admin-form__check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+.admin-form__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+/* ---- Modal ---- */
+.modal__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(4, 4, 6, 0.7);
+  backdrop-filter: blur(4px);
+  display: grid;
+  place-items: start center;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+.modal {
+  width: 100%;
+  max-width: 560px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 26px;
+}
+.modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+.modal__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* ---- Upload ---- */
+.uploader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.uploader__preview {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+/* ---- Messages ---- */
+.msg {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.msg--unread {
+  border-left: 3px solid var(--accent);
+}
+.msg__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.msg__from {
+  font-weight: 600;
+}
+.msg__email {
+  color: var(--text-faint);
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+}
+.msg__subject {
+  color: var(--accent-2);
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+.msg__body {
+  color: var(--text-dim);
+  margin-top: 6px;
+  white-space: pre-wrap;
+}
+.msg__date {
+  color: var(--text-faint);
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+}
+.msg__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+/* ---- Empty / loading ---- */
+.admin-empty {
+  text-align: center;
+  color: var(--text-faint);
+  padding: 60px 20px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+.admin-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.7);
+}
+.admin-toast--ok {
+  border-color: var(--accent-line);
+  color: var(--accent-2);
+}
+.admin-toast--err {
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #f87171;
+}
+
+/* ---- Mobile ---- */
+.admin__menu-btn {
+  display: none;
+}
+@media (max-width: 820px) {
+  .admin {
+    grid-template-columns: 1fr;
+  }
+  .admin__sidebar {
+    position: fixed;
+    z-index: 150;
+    width: 244px;
+    transform: translateX(-100%);
+    transition: transform 0.25s var(--ease);
+  }
+  .admin__sidebar--open {
+    transform: translateX(0);
+  }
+  .admin__menu-btn {
+    display: inline-flex;
+  }
+  .admin__main {
+    padding: 24px 20px 64px;
+  }
+  .admin-form__row {
+    grid-template-columns: 1fr;
+  }
+}
