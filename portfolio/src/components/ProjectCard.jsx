@@ -1,35 +1,29 @@
-import { motion } from 'framer-motion';
-import { ArrowUpRight, Github } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
+import { FaGithub } from 'react-icons/fa';
 import { resolveImage } from '../api/client.js';
 
-export default function ProjectCard({ project, index }) {
+export default function ProjectCard({ project }) {
   const img = resolveImage(project.image);
 
   return (
-    <motion.article
-      className="pcard"
-      initial={{ opacity: 0, y: 26 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.55, delay: (index % 2) * 0.08, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <div className="pcard__media">
+    <article className="proj-card">
+      <div className="proj-card__media">
         {img ? (
           <img src={img} alt={project.title} loading="lazy" />
         ) : (
-          <div className="pcard__placeholder">
+          <div className="proj-card__ph">
             <span>{(project.title || '?').charAt(0)}</span>
           </div>
         )}
-        {project.featured && <span className="pcard__featured">★ Featured</span>}
+        {project.featured && <span className="proj-card__badge">★ Featured</span>}
       </div>
 
-      <div className="pcard__body">
-        <h3 className="pcard__title">{project.title}</h3>
-        <p className="pcard__summary">{project.summary || project.description}</p>
+      <div className="proj-card__body">
+        <h3 className="proj-card__title">{project.title}</h3>
+        <p className="proj-card__desc">{project.summary || project.description}</p>
 
         {project.techStack?.length > 0 && (
-          <div className="pcard__tech">
+          <div className="proj-card__tech">
             {project.techStack.map((t) => (
               <span key={t} className="chip">
                 {t}
@@ -38,19 +32,21 @@ export default function ProjectCard({ project, index }) {
           </div>
         )}
 
-        <div className="pcard__links">
-          {project.liveUrl && (
-            <a href={project.liveUrl} target="_blank" rel="noreferrer" className="pcard__link">
-              Live demo <ArrowUpRight size={15} />
-            </a>
-          )}
-          {project.repoUrl && (
-            <a href={project.repoUrl} target="_blank" rel="noreferrer" className="pcard__link">
-              Code <Github size={15} />
-            </a>
-          )}
-        </div>
+        {(project.liveUrl || project.repoUrl) && (
+          <div className="proj-card__links">
+            {project.liveUrl && (
+              <a href={project.liveUrl} target="_blank" rel="noreferrer">
+                Live demo <ArrowUpRight size={14} />
+              </a>
+            )}
+            {project.repoUrl && (
+              <a href={project.repoUrl} target="_blank" rel="noreferrer">
+                Code <FaGithub size={14} />
+              </a>
+            )}
+          </div>
+        )}
       </div>
-    </motion.article>
+    </article>
   );
 }
