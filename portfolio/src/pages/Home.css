@@ -149,7 +149,9 @@ a.card:hover .card__cta {
 }
 .marquee-col {
   width: 200px;
+  height: 300px;
   flex-shrink: 0;
+  align-self: stretch;
   position: relative;
   overflow: hidden;
   -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);

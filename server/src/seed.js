@@ -33,6 +33,7 @@ async function seed() {
   await Profile.deleteMany({});
   await Profile.create({
     name: 'Vishnu R Das',
+    handle: '@vishnurdas27',
     title: 'Full-Stack Developer',
     heroIntro:
       'I build robust, scalable web applications with the MERN stack — turning complex ideas into clean, fast, interactive products.',
@@ -57,6 +58,28 @@ async function seed() {
       'Framer Motion',
       'REST APIs',
       'Git & GitHub',
+    ],
+    experience: [
+      {
+        role: 'Full-Stack Developer',
+        company: 'Freelance',
+        period: '2024 — present',
+        description:
+          'Designing and building end-to-end web apps for clients with React, Node.js, Express, and MongoDB.',
+      },
+      {
+        role: 'Frontend Developer Intern',
+        company: 'TechStartup',
+        period: '2023 — 2024',
+        description:
+          'Built responsive UIs and reusable component libraries; collaborated with designers and the backend team.',
+      },
+      {
+        role: 'Open-Source Contributor',
+        company: 'GitHub',
+        period: '2023 — present',
+        description: 'Contributing fixes and features to JavaScript and React projects.',
+      },
     ],
   });
   console.log('✓ Profile seeded');

@@ -5,6 +5,7 @@ import { updateProfile } from '../../api/endpoints.js';
 export default function ProfilePanel({ profile, reload, toast }) {
   const [form, setForm] = useState({
     name: profile?.name || '',
+    handle: profile?.handle || '',
     title: profile?.title || '',
     heroIntro: profile?.heroIntro || '',
     aboutText: profile?.aboutText || '',
@@ -16,15 +17,30 @@ export default function ProfilePanel({ profile, reload, toast }) {
     linkedin: profile?.socials?.linkedin || '',
     twitter: profile?.socials?.twitter || '',
   });
+  const [experience, setExperience] = useState(
+    (profile?.experience || []).map((e) => ({
+      role: e.role || '',
+      company: e.company || '',
+      period: e.period || '',
+      description: e.description || '',
+    }))
+  );
   const [saving, setSaving] = useState(false);
 
   const update = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  const updateExp = (i, key, value) =>
+    setExperience((list) => list.map((item, idx) => (idx === i ? { ...item, [key]: value } : item)));
+  const addExp = () =>
+    setExperience((list) => [...list, { role: '', company: '', period: '', description: '' }]);
+  const removeExp = (i) => setExperience((list) => list.filter((_, idx) => idx !== i));
 
   const save = async (e) => {
     e.preventDefault();
     setSaving(true);
     const payload = {
       name: form.name,
+      handle: form.handle,
       title: form.title,
       heroIntro: form.heroIntro,
       aboutText: form.aboutText,
@@ -36,6 +52,7 @@ export default function ProfilePanel({ profile, reload, toast }) {
         .map((s) => s.trim())
         .filter(Boolean),
       socials: { github: form.github, linkedin: form.linkedin, twitter: form.twitter },
+      experience: experience.filter((e) => e.role || e.company),
     };
     try {
       await updateProfile(payload);
@@ -67,6 +84,11 @@ export default function ProfilePanel({ profile, reload, toast }) {
             <label>Title</label>
             <input name="title" value={form.title} onChange={update} />
           </div>
+        </div>
+
+        <div className="field">
+          <label>Handle (shown under your name in the sidebar)</label>
+          <input name="handle" value={form.handle} onChange={update} placeholder="@yourhandle" />
         </div>
 
         <div className="field">
@@ -114,6 +136,46 @@ export default function ProfilePanel({ profile, reload, toast }) {
         <div className="field">
           <label>Twitter URL</label>
           <input name="twitter" value={form.twitter} onChange={update} />
+        </div>
+
+        {/* Experience (Career page) */}
+        <div className="field">
+          <label>Experience (Career page)</label>
+          <div className="exp-editor">
+            {experience.map((exp, i) => (
+              <div className="exp-entry" key={i}>
+                <div className="admin-form__row">
+                  <input
+                    placeholder="Role"
+                    value={exp.role}
+                    onChange={(e) => updateExp(i, 'role', e.target.value)}
+                  />
+                  <input
+                    placeholder="Company"
+                    value={exp.company}
+                    onChange={(e) => updateExp(i, 'company', e.target.value)}
+                  />
+                </div>
+                <input
+                  placeholder="Period (e.g. 2023 — present)"
+                  value={exp.period}
+                  onChange={(e) => updateExp(i, 'period', e.target.value)}
+                />
+                <textarea
+                  placeholder="Description"
+                  rows={2}
+                  value={exp.description}
+                  onChange={(e) => updateExp(i, 'description', e.target.value)}
+                />
+                <button type="button" className="btn exp-entry__remove" onClick={() => removeExp(i)}>
+                  Remove
+                </button>
+              </div>
+            ))}
+            <button type="button" className="btn" onClick={addExp}>
+              + Add experience
+            </button>
+          </div>
         </div>
 
         <div className="admin-form__actions">

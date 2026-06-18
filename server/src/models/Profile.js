@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 const profileSchema = new mongoose.Schema(
   {
     name: { type: String, default: 'Your Name' },
+    handle: { type: String, default: '' },
     title: { type: String, default: 'Full-Stack Developer' },
     heroIntro: { type: String, default: '' },
     aboutText: { type: String, default: '' },
@@ -17,6 +18,17 @@ const profileSchema = new mongoose.Schema(
       twitter: { type: String, default: '' },
     },
     skills: { type: [String], default: [] },
+    experience: {
+      type: [
+        {
+          role: { type: String, default: '' },
+          company: { type: String, default: '' },
+          period: { type: String, default: '' },
+          description: { type: String, default: '' },
+        },
+      ],
+      default: [],
+    },
   },
   { timestamps: true }
 );

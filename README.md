@@ -7,11 +7,13 @@ and Node.js**, plus a login-protected **admin CMS** to manage all content.
 > Bilingual/Arabic toggle from the reference site is intentionally excluded.
 
 ## Features
-- ⚡ Dark, minimalist, responsive single-page site (Hero · About · Projects · Achievements · Contact)
-- 🎞️ Smooth scroll + Framer Motion entrance animations
-- 🗄️ Content served from MongoDB (projects, achievements, profile/about)
+- 🧭 Fixed-sidebar layout (avatar, name + verified badge, @handle, theme toggle, icon nav, copyright) — modeled on the reference design
+- 🟦 Bento-grid home with animated marquee cards (Projects Showcase, Skills & Tools, About Me, Achievements, Career, Contact)
+- 📄 Dedicated pages: Home · About · Career · Projects · Achievements · Contact
+- 🌗 Dark / light theme toggle (persisted to localStorage)
+- 🗄️ Content served from MongoDB (projects, achievements, profile/about, experience)
 - 📬 Working contact form — submissions stored in the DB (optional email notifications)
-- 🔐 JWT-protected **admin dashboard** at `/admin` — full CRUD for projects & achievements, edit profile/about, image uploads, and a message inbox
+- 🔐 JWT-protected **admin dashboard** at `/admin` — full CRUD for projects & achievements, edit profile/about/experience, image uploads, and a message inbox
 - 🛟 Static fallback content so the site looks complete even before the API is connected
 
 ## Tech stack
