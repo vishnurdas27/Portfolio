@@ -1,11 +1,27 @@
-import Hero from './components/Hero'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext.jsx';
+import ProtectedRoute from './routes/ProtectedRoute.jsx';
+import Home from './pages/Home.jsx';
+import Login from './pages/admin/Login.jsx';
+import Dashboard from './pages/admin/Dashboard.jsx';
 
-function App() {
+export default function App() {
   return (
-    <>
-      <Hero />
-    </>
-  )
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/admin/login" element={<Login />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
-
-export default App

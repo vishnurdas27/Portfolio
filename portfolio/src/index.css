@@ -1,10 +1,227 @@
-* {
+/* ============================================================
+   Design tokens
+   ============================================================ */
+:root {
+  /* Surfaces */
+  --bg: #0a0a0c;
+  --bg-soft: #0f0f12;
+  --surface: #141418;
+  --surface-2: #1a1a1f;
+  --border: #232328;
+  --border-strong: #303036;
+
+  /* Text */
+  --text: #ededf0;
+  --text-dim: #a0a0a8;
+  --text-faint: #6a6a72;
+
+  /* Accent (easily swappable) */
+  --accent: #10b981;
+  --accent-2: #34d399;
+  --accent-soft: rgba(16, 185, 129, 0.12);
+  --accent-line: rgba(16, 185, 129, 0.35);
+
+  /* Type */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Layout */
+  --maxw: 1080px;
+  --gutter: 24px;
+  --nav-h: 72px;
+  --radius: 14px;
+  --radius-sm: 9px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================
+   Reset / base
+   ============================================================ */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-h);
+}
+
 body {
-  font-family: 'Inter', sans-serif; /* Ensure you import Inter in your index.html */
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Subtle ambient glow behind the page */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(620px circle at 78% -8%, rgba(16, 185, 129, 0.10), transparent 60%),
+    radial-gradient(720px circle at 0% 8%, rgba(52, 211, 153, 0.05), transparent 55%);
+  pointer-events: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent-2);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3d3d44;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   Shared layout primitives
+   ============================================================ */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: 120px;
+  scroll-margin-top: var(--nav-h);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-block: 80px;
+  }
+}
+
+/* Mono "01 — Section" label */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--accent-2);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.section-label::before {
+  content: '';
+  width: 26px;
+  height: 1px;
+  background: var(--accent-line);
+}
+
+.section-title {
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.section-intro {
+  color: var(--text-dim);
+  max-width: 560px;
+  font-size: 1.05rem;
+  margin-bottom: 56px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 22px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.15s var(--ease), background 0.2s, border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn-primary {
+  background: var(--accent);
+  color: #04150f;
+}
+.btn-primary:hover {
+  background: var(--accent-2);
+}
+.btn-ghost {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent-2);
+}
+
+/* Chips / tags */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+
+.text-accent {
+  color: var(--accent-2);
 }
