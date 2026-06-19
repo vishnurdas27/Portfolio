@@ -404,6 +404,7 @@
     width: 244px;
     transform: translateX(-100%);
     transition: transform 0.25s var(--ease);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.4);
   }
   .admin__sidebar--open {
     transform: translateX(0);
@@ -416,6 +417,38 @@
   }
   .admin-form__row {
     grid-template-columns: 1fr;
+  }
+  .admin__header {
+    flex-wrap: wrap;
+  }
+  .admin-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .admin-row__sub {
+    white-space: normal;
+    max-width: 100%;
+  }
+  .admin-row__actions {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 540px) {
+  .modal__overlay {
+    padding: 16px 12px;
+  }
+  .modal {
+    padding: 20px 18px;
+  }
+  .login__card {
+    padding: 28px 22px;
+  }
+  .msg__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 }
 

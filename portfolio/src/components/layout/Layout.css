@@ -22,3 +22,9 @@
     padding: 26px 18px 70px;
   }
 }
+
+@media (max-width: 420px) {
+  .layout__content {
+    padding: 22px 14px 60px;
+  }
+}

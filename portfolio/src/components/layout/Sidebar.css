@@ -148,7 +148,8 @@
   z-index: 70;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  gap: 12px;
+  padding: 0 14px;
   background: color-mix(in srgb, var(--bg) 85%, transparent);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -158,16 +159,25 @@
   align-items: center;
   gap: 10px;
   font-weight: 700;
+  min-width: 0;
+  flex: 1;
+}
+.sidebar-topbar__id span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .sidebar-topbar__avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
 }
 .sidebar-topbar__actions {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 .sidebar__backdrop {
   display: none;

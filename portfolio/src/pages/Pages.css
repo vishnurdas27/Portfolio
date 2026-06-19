@@ -377,6 +377,34 @@
   .projects-grid {
     grid-template-columns: 1fr;
   }
+  .about-page__card {
+    max-width: 420px;
+  }
+}
+@media (max-width: 600px) {
+  .contact-page__form {
+    padding: 20px;
+  }
+  .about-page__card,
+  .contact-page__form {
+    padding: 18px;
+  }
+  .about-page__photo {
+    aspect-ratio: 4 / 3;
+  }
+  .edu-item {
+    padding: 12px 14px;
+  }
+  .edu-item__head {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .timeline {
+    padding-left: 22px;
+  }
+  .timeline__marker {
+    left: -22px;
+  }
 }
 @media (max-width: 480px) {
   .contact-page__row {
