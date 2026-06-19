@@ -1,12 +1,13 @@
 import { ArrowUpRight } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
+import TiltCard from './TiltCard.jsx';
 import { resolveImage } from '../api/client.js';
 
 export default function ProjectCard({ project }) {
   const img = resolveImage(project.image);
 
   return (
-    <article className="proj-card">
+    <TiltCard className="proj-card" max={7}>
       <div className="proj-card__media">
         {img ? (
           <img src={img} alt={project.title} loading="lazy" />
@@ -47,6 +48,6 @@ export default function ProjectCard({ project }) {
           </div>
         )}
       </div>
-    </article>
+    </TiltCard>
   );
 }

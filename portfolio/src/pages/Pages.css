@@ -79,6 +79,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 22px;
+  perspective: 1500px;
 }
 .proj-card {
   display: flex;

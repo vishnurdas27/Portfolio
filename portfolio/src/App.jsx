@@ -1,7 +1,10 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import { ThemeProvider } from './context/ThemeContext.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
+import Loader from './components/Loader.jsx';
 import Layout from './components/layout/Layout.jsx';
 import Home from './pages/Home.jsx';
 import AboutPage from './pages/AboutPage.jsx';
@@ -13,8 +16,17 @@ import Login from './pages/admin/Login.jsx';
 import Dashboard from './pages/admin/Dashboard.jsx';
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 2400);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <ThemeProvider>
+      <AnimatePresence>{loading && <Loader key="loader" />}</AnimatePresence>
+
       <AuthProvider>
         <BrowserRouter>
           <Routes>

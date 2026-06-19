@@ -1,4 +1,4 @@
-import { Link, useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import {
   FolderOpen,
   User,
@@ -10,6 +10,7 @@ import {
   MapPin,
   ArrowUpRight,
 } from 'lucide-react';
+import TiltCard from '../components/TiltCard.jsx';
 import { resolveImage } from '../api/client.js';
 import defaultAvatar from '../assets/IMG_4481.PNG';
 import './Home.css';
@@ -23,7 +24,6 @@ export default function Home() {
     : [{ company: 'Freelance' }, { company: 'Open Source' }];
   const avatar = resolveImage(profile?.avatar) || defaultAvatar;
 
-  // duplicate lists so the marquees loop seamlessly
   const skillLoop = [...skills, ...skills];
   const careerLoop = [...experience, ...experience];
   const projectLoop = [...projects, ...projects].slice(0, 8);
@@ -61,10 +61,10 @@ export default function Home() {
       <div className="home__divider" />
       <p className="home__explore">Explore everything I&apos;ve crafted, contributed, and accomplished.</p>
 
-      {/* ---- Bento grid ---- */}
+      {/* ---- Bento grid (3D tilt cards) ---- */}
       <div className="bento">
         {/* Projects Showcase — big */}
-        <Link to="/projects" className="card bento__projects">
+        <TiltCard to="/projects" className="card bento__projects" max={6}>
           <div className="card__head">
             <span className="card__icon">
               <FolderOpen size={18} />
@@ -86,10 +86,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </Link>
+        </TiltCard>
 
         {/* Skills & Tools */}
-        <div className="card bento__skills">
+        <TiltCard className="card bento__skills">
           <span className="card__icon">
             <Code2 size={18} />
           </span>
@@ -104,10 +104,10 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </div>
+        </TiltCard>
 
         {/* About Me */}
-        <Link to="/about" className="card bento__about">
+        <TiltCard to="/about" className="card bento__about">
           <span className="card__icon">
             <User size={18} />
           </span>
@@ -117,20 +117,20 @@ export default function Home() {
             <img src={avatar} alt="" className="bento__about-photo bento__about-photo--back" />
             <img src={avatar} alt="" className="bento__about-photo bento__about-photo--front" />
           </div>
-        </Link>
+        </TiltCard>
 
         {/* Achievements */}
-        <Link to="/achievements" className="card bento__achieve">
+        <TiltCard to="/achievements" className="card bento__achieve">
           <span className="card__icon">
             <Award size={18} />
           </span>
           <h3 className="card__title">Achievements</h3>
           <p className="card__desc">Milestones from programs, projects, and communities.</p>
           <span className="card__stat">{achievements?.length || 0}+ milestones</span>
-        </Link>
+        </TiltCard>
 
         {/* Career */}
-        <Link to="/career" className="card bento__career">
+        <TiltCard to="/career" className="card bento__career">
           <span className="card__icon">
             <Briefcase size={18} />
           </span>
@@ -145,10 +145,10 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </Link>
+        </TiltCard>
 
         {/* Contact */}
-        <Link to="/contact" className="card bento__contact">
+        <TiltCard to="/contact" className="card bento__contact">
           <span className="card__icon">
             <BookOpen size={18} />
           </span>
@@ -157,7 +157,7 @@ export default function Home() {
           <span className="card__cta">
             Get in touch <ArrowUpRight size={15} />
           </span>
-        </Link>
+        </TiltCard>
       </div>
     </div>
   );

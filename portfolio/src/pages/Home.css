@@ -57,6 +57,7 @@
   grid-auto-rows: minmax(150px, auto);
   gap: 16px;
   margin-top: 26px;
+  perspective: 1500px;
 }
 .bento__projects {
   grid-column: span 4;

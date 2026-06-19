@@ -1,0 +1,134 @@
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* 3D scene */
+.loader__scene {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: grid;
+  place-items: center;
+  perspective: 650px;
+}
+
+.loader__ring {
+  position: absolute;
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  border: 1px dashed var(--border-strong);
+  border-top-color: var(--accent);
+  animation: ringspin 3.4s linear infinite;
+}
+
+/* Extruded, rotating V (stacked SVG layers in 3D) */
+.loader__v {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  transform-style: preserve-3d;
+  animation: vspin 3.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 26px var(--accent-soft));
+}
+.loader__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.loader__layer path {
+  fill: none;
+  stroke: var(--text-faint);
+  stroke-width: 13;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.5;
+}
+/* front face */
+.loader__layer:last-child path {
+  stroke: var(--text);
+  opacity: 1;
+  stroke-dasharray: 168;
+  stroke-dashoffset: 168;
+  animation: vdraw 1.2s 0.15s ease forwards;
+}
+
+/* progress bar */
+.loader__bar {
+  width: 184px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--border);
+  overflow: hidden;
+  margin-top: 46px;
+}
+.loader__bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  animation: vfill 1.9s ease forwards;
+}
+
+.loader__brand {
+  margin-top: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.42em;
+  color: var(--text-faint);
+  padding-left: 0.42em;
+  opacity: 0;
+  animation: fadein 0.8s 0.5s ease forwards;
+}
+
+@keyframes vspin {
+  0% {
+    transform: rotateY(-32deg) rotateX(10deg);
+  }
+  50% {
+    transform: rotateY(32deg) rotateX(10deg);
+  }
+  100% {
+    transform: rotateY(-32deg) rotateX(10deg);
+  }
+}
+@keyframes ringspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes vdraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes vfill {
+  to {
+    width: 100%;
+  }
+}
+@keyframes fadein {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader__v,
+  .loader__ring {
+    animation: none;
+  }
+  .loader__layer:last-child path {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}
