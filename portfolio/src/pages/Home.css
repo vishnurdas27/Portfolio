@@ -1,4 +1,7 @@
 /* ---- Hero ---- */
+.home-hero {
+  position: relative;
+}
 .home-hero__top {
   display: flex;
   align-items: flex-start;
@@ -10,6 +13,19 @@
   font-weight: 800;
   letter-spacing: -0.025em;
   line-height: 1.1;
+  text-shadow: 1px 1px 0 var(--text-3d-1), 2px 2px 0 var(--text-3d-2),
+    3px 5px 12px rgba(0, 0, 0, 0.3);
+}
+.home-shape {
+  position: absolute;
+  top: 58px;
+  right: 4px;
+  z-index: 1;
+}
+@media (max-width: 1080px) {
+  .home-shape {
+    display: none;
+  }
 }
 .home-hero__cv {
   flex-shrink: 0;
@@ -81,13 +97,33 @@
   border-radius: var(--radius);
   padding: 22px;
   box-shadow: var(--card-shadow);
-  overflow: hidden;
   color: inherit;
-  transition: border-color 0.25s, transform 0.25s var(--ease);
+  transition: border-color 0.25s, box-shadow 0.3s var(--ease);
 }
-a.card:hover {
+.card:hover {
   border-color: var(--border-strong);
-  transform: translateY(-3px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* Depth: lift inner content above the card surface (3D pop) */
+.card .card__icon {
+  transform: translateZ(38px);
+}
+.card .card__title {
+  transform: translateZ(24px);
+}
+.card .card__desc {
+  transform: translateZ(14px);
+}
+.card .card__cta,
+.card .card__stat {
+  transform: translateZ(20px);
+}
+/* keep nested wrappers 3D so their content can pop */
+.card__head,
+.bento__projects-body,
+.card__text {
+  transform-style: preserve-3d;
 }
 .card__head {
   display: flex;

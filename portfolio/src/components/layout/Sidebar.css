@@ -43,6 +43,13 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  perspective: 800px;
+}
+.sidebar__profile-3d {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-style: preserve-3d;
 }
 .sidebar__avatar {
   width: 96px;

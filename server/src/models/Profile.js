@@ -29,6 +29,18 @@ const profileSchema = new mongoose.Schema(
       ],
       default: [],
     },
+    education: {
+      type: [
+        {
+          degree: { type: String, default: '' },
+          institution: { type: String, default: '' },
+          period: { type: String, default: '' },
+          location: { type: String, default: '' },
+          score: { type: String, default: '' },
+        },
+      ],
+      default: [],
+    },
   },
   { timestamps: true }
 );

@@ -36,6 +36,27 @@ export default function AboutPage() {
               </div>
             </>
           )}
+
+          {profile?.education?.length > 0 && (
+            <>
+              <h3 className="about-page__subtitle">Education</h3>
+              <ul className="about-page__edu">
+                {profile.education.map((e, i) => (
+                  <li key={i} className="edu-item">
+                    <div className="edu-item__head">
+                      <div className="edu-item__degree">{e.degree}</div>
+                      {e.period && <span className="edu-item__period">{e.period}</span>}
+                    </div>
+                    <div className="edu-item__meta">
+                      {e.institution}
+                      {e.location && <span className="edu-item__loc"> · {e.location}</span>}
+                    </div>
+                    {e.score && <div className="edu-item__score">{e.score}</div>}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
 
         <aside className="about-page__card">

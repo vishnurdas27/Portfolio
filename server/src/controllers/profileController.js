@@ -27,6 +27,7 @@ export async function updateProfile(req, res) {
     'avatar',
     'skills',
     'experience',
+    'education',
   ];
   for (const f of fields) {
     if (req.body[f] !== undefined) profile[f] = req.body[f];

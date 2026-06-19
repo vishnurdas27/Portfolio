@@ -1,4 +1,5 @@
 import { useOutletContext } from 'react-router-dom';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   FolderOpen,
   User,
@@ -18,6 +19,11 @@ import './Home.css';
 export default function Home() {
   const { profile, projects, achievements } = useOutletContext();
 
+  // Scroll parallax for the hero text
+  const { scrollY } = useScroll();
+  const titleY = useTransform(scrollY, [0, 400], [0, -34]);
+  const introY = useTransform(scrollY, [0, 400], [0, -16]);
+
   const skills = profile?.skills?.length ? profile.skills : ['React', 'Node.js', 'MongoDB'];
   const experience = profile?.experience?.length
     ? profile.experience
@@ -33,7 +39,9 @@ export default function Home() {
       {/* ---- Hero ---- */}
       <header className="home-hero">
         <div className="home-hero__top">
-          <h1 className="home-hero__title">Hi, I&apos;m {profile?.name || 'Vishnu R Das'}</h1>
+          <motion.h1 className="home-hero__title" style={{ y: titleY }}>
+            Hi, I&apos;m {profile?.name || 'Vishnu R Das'}
+          </motion.h1>
           <a
             className="btn home-hero__cv"
             href={profile?.resumeUrl || '/contact'}
@@ -55,7 +63,9 @@ export default function Home() {
           )}
         </div>
 
-        <p className="home-hero__intro">{profile?.heroIntro}</p>
+        <motion.p className="home-hero__intro" style={{ y: introY }}>
+          {profile?.heroIntro}
+        </motion.p>
       </header>
 
       <div className="home__divider" />

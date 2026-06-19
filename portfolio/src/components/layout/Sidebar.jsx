@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import {
   Home,
   User,
@@ -38,6 +39,30 @@ export default function Sidebar({ profile }) {
     (profile?.socials?.github ? '@' + profile.socials.github.split('/').filter(Boolean).pop() : '');
   const year = new Date().getFullYear();
 
+  // 3D tilt for the profile block
+  const profileRef = useRef(null);
+  const mvX = useMotionValue(0);
+  const mvY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mvY, [-0.5, 0.5], [13, -13]), {
+    stiffness: 150,
+    damping: 14,
+  });
+  const rotateY = useSpring(useTransform(mvX, [-0.5, 0.5], [-13, 13]), {
+    stiffness: 150,
+    damping: 14,
+  });
+  const onProfileMove = (e) => {
+    const el = profileRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    mvX.set((e.clientX - r.left) / r.width - 0.5);
+    mvY.set((e.clientY - r.top) / r.height - 0.5);
+  };
+  const onProfileLeave = () => {
+    mvX.set(0);
+    mvY.set(0);
+  };
+
   return (
     <>
       {/* Mobile top bar */}
@@ -62,14 +87,33 @@ export default function Sidebar({ profile }) {
 
       <aside className={`sidebar ${open ? 'sidebar--open' : ''}`}>
         <div className="sidebar__inner">
-          {/* Profile */}
-          <div className="sidebar__profile">
-            <img src={avatar} alt={profile?.name || 'Avatar'} className="sidebar__avatar" />
-            <div className="sidebar__name">
-              {profile?.name || 'Vishnu R Das'}
-              <BadgeCheck size={18} className="sidebar__verified" />
-            </div>
-            {handle && <div className="sidebar__handle">{handle}</div>}
+          {/* Profile (3D tilt) */}
+          <div
+            className="sidebar__profile"
+            ref={profileRef}
+            onMouseMove={onProfileMove}
+            onMouseLeave={onProfileLeave}
+          >
+            <motion.div
+              className="sidebar__profile-3d"
+              style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+            >
+              <img
+                src={avatar}
+                alt={profile?.name || 'Avatar'}
+                className="sidebar__avatar"
+                style={{ transform: 'translateZ(36px)' }}
+              />
+              <div className="sidebar__name" style={{ transform: 'translateZ(22px)' }}>
+                {profile?.name || 'Vishnu R Das'}
+                <BadgeCheck size={18} className="sidebar__verified" />
+              </div>
+              {handle && (
+                <div className="sidebar__handle" style={{ transform: 'translateZ(12px)' }}>
+                  {handle}
+                </div>
+              )}
+            </motion.div>
 
             <button className="theme-toggle sidebar__theme" onClick={toggleTheme} aria-label="Toggle theme">
               {theme === 'dark' ? <Moon size={16} /> : <Sun size={16} />}

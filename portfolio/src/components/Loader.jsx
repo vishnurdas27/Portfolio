@@ -1,29 +1,52 @@
 import { motion } from 'framer-motion';
 import './Loader.css';
 
-const LAYERS = 7;
+const DEPTH = 16;
+const V_PATH = 'M12 14 L50 92 L88 14 L70 14 L50 58 L30 14 Z';
 
 export default function Loader() {
   return (
     <motion.div
       className="loader"
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, filter: 'blur(10px)' }}
+      exit={{ opacity: 0, filter: 'blur(12px)' }}
       transition={{ duration: 0.7, ease: 'easeInOut' }}
     >
       <div className="loader__scene">
-        <span className="loader__ring" />
+        <span className="loader__glow" />
+        <span className="loader__ring loader__ring--1" />
+        <span className="loader__ring loader__ring--2" />
+        <div className="loader__orbit">
+          <span className="loader__orbit-dot" />
+        </div>
+
         <div className="loader__v">
-          {Array.from({ length: LAYERS }).map((_, i) => (
+          {/* extruded body */}
+          {Array.from({ length: DEPTH }).map((_, i) => (
             <svg
               key={i}
-              className="loader__layer"
-              viewBox="0 0 120 120"
-              style={{ transform: `translateZ(${(i - LAYERS + 1) * 4}px)` }}
+              className="loader__side"
+              viewBox="0 0 100 100"
+              style={{ transform: `translateZ(${-(i + 1) * 1.7}px)` }}
             >
-              <path d="M26 28 L60 94 L94 28" />
+              <path d={V_PATH} />
             </svg>
           ))}
+
+          {/* glossy front face */}
+          <svg className="loader__face" viewBox="0 0 100 100">
+            <defs>
+              <linearGradient id="vGrad" x1="0" y1="0" x2="0.85" y2="1">
+                <stop offset="0" stopColor="#bdecff" />
+                <stop offset="0.45" stopColor="#38bdf8" />
+                <stop offset="1" stopColor="#1e40af" />
+              </linearGradient>
+            </defs>
+            <path d={V_PATH} fill="url(#vGrad)" />
+          </svg>
+
+          {/* sweeping gloss highlight, clipped to the V */}
+          <span className="loader__shine" />
         </div>
       </div>
 

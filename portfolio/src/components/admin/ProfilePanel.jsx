@@ -25,6 +25,15 @@ export default function ProfilePanel({ profile, reload, toast }) {
       description: e.description || '',
     }))
   );
+  const [education, setEducation] = useState(
+    (profile?.education || []).map((e) => ({
+      degree: e.degree || '',
+      institution: e.institution || '',
+      period: e.period || '',
+      location: e.location || '',
+      score: e.score || '',
+    }))
+  );
   const [saving, setSaving] = useState(false);
 
   const update = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -34,6 +43,15 @@ export default function ProfilePanel({ profile, reload, toast }) {
   const addExp = () =>
     setExperience((list) => [...list, { role: '', company: '', period: '', description: '' }]);
   const removeExp = (i) => setExperience((list) => list.filter((_, idx) => idx !== i));
+
+  const updateEdu = (i, key, value) =>
+    setEducation((list) => list.map((item, idx) => (idx === i ? { ...item, [key]: value } : item)));
+  const addEdu = () =>
+    setEducation((list) => [
+      ...list,
+      { degree: '', institution: '', period: '', location: '', score: '' },
+    ]);
+  const removeEdu = (i) => setEducation((list) => list.filter((_, idx) => idx !== i));
 
   const save = async (e) => {
     e.preventDefault();
@@ -53,6 +71,7 @@ export default function ProfilePanel({ profile, reload, toast }) {
         .filter(Boolean),
       socials: { github: form.github, linkedin: form.linkedin, twitter: form.twitter },
       experience: experience.filter((e) => e.role || e.company),
+      education: education.filter((e) => e.degree || e.institution),
     };
     try {
       await updateProfile(payload);
@@ -174,6 +193,52 @@ export default function ProfilePanel({ profile, reload, toast }) {
             ))}
             <button type="button" className="btn" onClick={addExp}>
               + Add experience
+            </button>
+          </div>
+        </div>
+
+        {/* Education (About page) */}
+        <div className="field">
+          <label>Education (About page)</label>
+          <div className="exp-editor">
+            {education.map((edu, i) => (
+              <div className="exp-entry" key={i}>
+                <div className="admin-form__row">
+                  <input
+                    placeholder="Degree / Programme"
+                    value={edu.degree}
+                    onChange={(e) => updateEdu(i, 'degree', e.target.value)}
+                  />
+                  <input
+                    placeholder="Institution"
+                    value={edu.institution}
+                    onChange={(e) => updateEdu(i, 'institution', e.target.value)}
+                  />
+                </div>
+                <div className="admin-form__row">
+                  <input
+                    placeholder="Period (e.g. 2023 — 2026)"
+                    value={edu.period}
+                    onChange={(e) => updateEdu(i, 'period', e.target.value)}
+                  />
+                  <input
+                    placeholder="Location"
+                    value={edu.location}
+                    onChange={(e) => updateEdu(i, 'location', e.target.value)}
+                  />
+                </div>
+                <input
+                  placeholder="Score / CGPA (optional)"
+                  value={edu.score}
+                  onChange={(e) => updateEdu(i, 'score', e.target.value)}
+                />
+                <button type="button" className="btn exp-entry__remove" onClick={() => removeEdu(i)}>
+                  Remove
+                </button>
+              </div>
+            ))}
+            <button type="button" className="btn" onClick={addEdu}>
+              + Add education
             </button>
           </div>
         </div>
