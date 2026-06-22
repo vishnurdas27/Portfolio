@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { connectDB } from './config/db.js';
+import { autoSeed } from './autoSeed.js';
 import authRoutes from './routes/authRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
@@ -57,6 +58,7 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 connectDB(process.env.MONGO_URI)
+  .then(() => autoSeed())
   .then(() => {
     app.listen(PORT, () => console.log(`✓ Server running on http://localhost:${PORT}`));
   })
