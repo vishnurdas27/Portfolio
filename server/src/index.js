@@ -19,13 +19,19 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 
-// Allow the configured client plus common local Vite ports (in case 5173 is taken).
 const allowedOrigins = [
   process.env.CLIENT_URL,
   'http://localhost:5173',
   'http://localhost:5174',
 ].filter(Boolean);
-app.use(cors({ origin: allowedOrigins }));
+app.use(cors({
+  origin(origin, cb) {
+    if (!origin) return cb(null, true);
+    if (allowedOrigins.includes(origin)) return cb(null, true);
+    if (/\.vercel\.app$/.test(origin)) return cb(null, true);
+    cb(new Error('CORS'));
+  },
+}));
 app.use(express.json());
 app.use(morgan('dev'));
 
