@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 import TiltCard from './TiltCard.jsx';
 import { resolveImage } from '../api/client.js';
+
+const AUTO_ADVANCE_MS = 4000; // slow scroll — ~4s per image
 
 export default function ProjectCard({ project }) {
   // Prefer the new images array; fall back to the legacy single image field
@@ -13,25 +15,50 @@ export default function ProjectCard({ project }) {
       : [];
   const images = rawImages.map(resolveImage).filter(Boolean);
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   const total = images.length;
   const hasMultiple = total > 1;
+
+  // Auto-advance the carousel while it's idle (paused on hover or when nothing to scroll)
+  useEffect(() => {
+    if (!hasMultiple || paused) return;
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % total);
+    }, AUTO_ADVANCE_MS);
+    return () => clearInterval(id);
+  }, [hasMultiple, paused, total]);
+
+  // After a manual click we briefly pause auto-scroll so the user has time to look
+  const pauseTimer = useRef(null);
+  const bumpPause = () => {
+    setPaused(true);
+    if (pauseTimer.current) clearTimeout(pauseTimer.current);
+    pauseTimer.current = setTimeout(() => setPaused(false), 5000);
+  };
+  useEffect(() => () => clearTimeout(pauseTimer.current), []);
 
   // Stop the click from bubbling up to the tilt card / parent link
   const prev = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIndex((i) => (i - 1 + total) % total);
+    bumpPause();
   };
   const next = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIndex((i) => (i + 1) % total);
+    bumpPause();
   };
 
   return (
     <TiltCard className="proj-card" max={7}>
-      <div className="proj-card__media">
+      <div
+        className="proj-card__media"
+        onMouseEnter={hasMultiple ? () => setPaused(true) : undefined}
+        onMouseLeave={hasMultiple ? () => setPaused(false) : undefined}
+      >
         {total > 0 ? (
           <>
             <img
@@ -71,6 +98,7 @@ export default function ProjectCard({ project }) {
                         e.preventDefault();
                         e.stopPropagation();
                         setIndex(i);
+                        bumpPause();
                       }}
                       aria-label={`Image ${i + 1}`}
                     />
