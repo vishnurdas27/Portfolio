@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, Star } from 'lucide-react';
+import { Plus, Pencil, Trash2, Star, X } from 'lucide-react';
 import Modal from './Modal.jsx';
 import { createProject, updateProject, deleteProject } from '../../api/endpoints.js';
 import { resolveImage } from '../../api/client.js';
@@ -9,6 +9,7 @@ const EMPTY = {
   summary: '',
   description: '',
   image: '',
+  images: [],
   techStack: '',
   liveUrl: '',
   repoUrl: '',
@@ -26,7 +27,18 @@ export default function ProjectsPanel({ projects, reload, toast }) {
     setEditing('new');
   };
   const openEdit = (p) => {
-    setForm({ ...EMPTY, ...p, techStack: (p.techStack || []).join(', ') });
+    // Merge old single `image` into the images array so older projects edit cleanly
+    const existing = Array.isArray(p.images) && p.images.length > 0
+      ? p.images
+      : p.image
+        ? [p.image]
+        : [];
+    setForm({
+      ...EMPTY,
+      ...p,
+      images: existing,
+      techStack: (p.techStack || []).join(', '),
+    });
     setEditing(p);
   };
   const close = () => setEditing(null);
@@ -36,9 +48,18 @@ export default function ProjectsPanel({ projects, reload, toast }) {
     setForm((f) => ({ ...f, [name]: type === 'checkbox' ? checked : value }));
   };
 
+  // Carousel image URL handlers
+  const updateImage = (i, value) =>
+    setForm((f) => ({ ...f, images: f.images.map((url, idx) => (idx === i ? value : url)) }));
+  const addImage = () =>
+    setForm((f) => ({ ...f, images: [...f.images, ''] }));
+  const removeImage = (i) =>
+    setForm((f) => ({ ...f, images: f.images.filter((_, idx) => idx !== i) }));
+
   const save = async (e) => {
     e.preventDefault();
     setSaving(true);
+    const cleanedImages = form.images.map((s) => s.trim()).filter(Boolean);
     const payload = {
       ...form,
       order: Number(form.order) || 0,
@@ -46,6 +67,9 @@ export default function ProjectsPanel({ projects, reload, toast }) {
         .split(',')
         .map((s) => s.trim())
         .filter(Boolean),
+      images: cleanedImages,
+      // Keep `image` in sync with the first image so older fallback code still works
+      image: cleanedImages[0] || '',
     };
     try {
       if (editing === 'new') {
@@ -134,21 +158,42 @@ export default function ProjectsPanel({ projects, reload, toast }) {
             </div>
 
             <div className="field">
-              <label>Image URL</label>
-              <div className="uploader">
-                {form.image && (
-                  <img className="uploader__preview" src={resolveImage(form.image)} alt="" />
+              <label>Images (carousel)</label>
+              <div className="img-list">
+                {form.images.length === 0 && (
+                  <p style={{ fontSize: '0.82rem', color: 'var(--text-faint)' }}>
+                    No images yet. Click below to add one.
+                  </p>
                 )}
-                <input
-                  name="image"
-                  value={form.image}
-                  onChange={update}
-                  placeholder="Paste a Cloudinary (or any) image URL"
-                  style={{ flex: 1 }}
-                />
+                {form.images.map((url, i) => (
+                  <div className="img-list__row" key={i}>
+                    {url ? (
+                      <img className="uploader__preview" src={resolveImage(url)} alt="" />
+                    ) : (
+                      <div className="uploader__preview img-list__empty">{i + 1}</div>
+                    )}
+                    <input
+                      value={url}
+                      onChange={(e) => updateImage(i, e.target.value)}
+                      placeholder="Paste a Cloudinary image URL"
+                      style={{ flex: 1 }}
+                    />
+                    <button
+                      type="button"
+                      className="icon-btn icon-btn--danger"
+                      onClick={() => removeImage(i)}
+                      aria-label="Remove image"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                ))}
+                <button type="button" className="btn" onClick={addImage}>
+                  <Plus size={14} /> Add image
+                </button>
               </div>
               <p style={{ fontSize: '0.78rem', color: 'var(--text-faint)', marginTop: 6 }}>
-                Upload to Cloudinary, then paste the delivery URL here.
+                Add multiple Cloudinary URLs — they&apos;ll show up as a carousel on the project card.
               </p>
             </div>
 
