@@ -12,6 +12,7 @@ export default function ProfilePanel({ profile, reload, toast }) {
     location: profile?.location || '',
     email: profile?.email || '',
     resumeUrl: profile?.resumeUrl || '',
+    avatar: profile?.avatar || '',
     skills: (profile?.skills || []).join(', '),
     github: profile?.socials?.github || '',
     linkedin: profile?.socials?.linkedin || '',
@@ -65,6 +66,7 @@ export default function ProfilePanel({ profile, reload, toast }) {
       location: form.location,
       email: form.email,
       resumeUrl: form.resumeUrl,
+      avatar: form.avatar,
       skills: form.skills
         .split(',')
         .map((s) => s.trim())
@@ -129,6 +131,30 @@ export default function ProfilePanel({ profile, reload, toast }) {
             <label>Email</label>
             <input name="email" type="email" value={form.email} onChange={update} />
           </div>
+        </div>
+
+        <div className="field">
+          <label>Avatar URL</label>
+          <div className="uploader">
+            {form.avatar && (
+              <img
+                className="uploader__preview"
+                src={form.avatar}
+                alt=""
+                style={{ borderRadius: '50%' }}
+              />
+            )}
+            <input
+              name="avatar"
+              value={form.avatar}
+              onChange={update}
+              placeholder="Paste a Cloudinary image URL"
+              style={{ flex: 1 }}
+            />
+          </div>
+          <p style={{ fontSize: '0.78rem', color: 'var(--text-faint)', marginTop: 6 }}>
+            Upload to Cloudinary, then paste the delivery URL here. Leave empty to use the default avatar.
+          </p>
         </div>
 
         <div className="field">

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, Star, Upload } from 'lucide-react';
+import { Plus, Pencil, Trash2, Star } from 'lucide-react';
 import Modal from './Modal.jsx';
-import { createProject, updateProject, deleteProject, uploadImage } from '../../api/endpoints.js';
+import { createProject, updateProject, deleteProject } from '../../api/endpoints.js';
 import { resolveImage } from '../../api/client.js';
 
 const EMPTY = {
@@ -20,7 +20,6 @@ export default function ProjectsPanel({ projects, reload, toast }) {
   const [editing, setEditing] = useState(null); // null | 'new' | project
   const [form, setForm] = useState(EMPTY);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
 
   const openNew = () => {
     setForm(EMPTY);
@@ -35,20 +34,6 @@ export default function ProjectsPanel({ projects, reload, toast }) {
   const update = (e) => {
     const { name, value, type, checked } = e.target;
     setForm((f) => ({ ...f, [name]: type === 'checkbox' ? checked : value }));
-  };
-
-  const onFile = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      const { url } = await uploadImage(file);
-      setForm((f) => ({ ...f, image: url }));
-    } catch {
-      toast('Image upload failed', 'err');
-    } finally {
-      setUploading(false);
-    }
   };
 
   const save = async (e) => {
@@ -149,23 +134,22 @@ export default function ProjectsPanel({ projects, reload, toast }) {
             </div>
 
             <div className="field">
-              <label>Image</label>
+              <label>Image URL</label>
               <div className="uploader">
                 {form.image && (
                   <img className="uploader__preview" src={resolveImage(form.image)} alt="" />
                 )}
-                <label className="btn btn-ghost" style={{ cursor: 'pointer' }}>
-                  <Upload size={15} /> {uploading ? 'Uploading…' : 'Upload'}
-                  <input type="file" accept="image/*" onChange={onFile} hidden />
-                </label>
+                <input
+                  name="image"
+                  value={form.image}
+                  onChange={update}
+                  placeholder="Paste a Cloudinary (or any) image URL"
+                  style={{ flex: 1 }}
+                />
               </div>
-              <input
-                name="image"
-                value={form.image}
-                onChange={update}
-                placeholder="…or paste an image URL"
-                style={{ marginTop: 10 }}
-              />
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-faint)', marginTop: 6 }}>
+                Upload to Cloudinary, then paste the delivery URL here.
+              </p>
             </div>
 
             <div className="field">
